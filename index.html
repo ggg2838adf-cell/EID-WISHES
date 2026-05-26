@@ -9,6 +9,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Cinzel:wght@600;700&family=Poppins:wght@300;400;600&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* Smooth Scrolling for Mobile */
+        html {
+            scroll-behavior: smooth;
+        }
+
         /* Base Styling & Premium Dark Theme */
         :root {
             --gold: #d4af37;
@@ -31,18 +36,19 @@
             align-items: center;
             font-family: 'Poppins', sans-serif;
             overflow-x: hidden;
+            overflow-y: auto; /* Ensures smooth vertical scrolling on phones */
             position: relative;
         }
 
-        /* Fireworks Canvas */
+        /* Fireworks Canvas - Moved to FRONT */
         #fireworksCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1;
-            pointer-events: none;
+            z-index: 100; /* High z-index brings it in front of all elements */
+            pointer-events: none; /* Allows user to click/scroll through the fireworks */
         }
 
         /* Subtle Background Islamic Pattern */
@@ -96,7 +102,6 @@
             max-width: 650px;
             width: 90%;
             margin: 40px 0;
-            overflow: hidden;
             animation: cardReveal 2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -137,14 +142,14 @@
             100% { background-position: 200% 200%; }
         }
 
-        /* Central Image Styling */
+        /* Square Central Image Styling */
         .central-image-container {
             position: relative;
             z-index: 2;
-            margin: 0 auto 25px auto;
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
+            margin: 30px auto 25px auto;
+            width: 250px; /* Square proportions */
+            height: 250px; /* Square proportions */
+            border-radius: 10px; /* Very slight premium curve instead of circle */
             padding: 5px;
             background: linear-gradient(45deg, var(--gold), #fff, var(--gold));
             box-shadow: 0 0 30px var(--gold-glow);
@@ -154,9 +159,10 @@
         .central-image {
             width: 100%;
             height: 100%;
-            border-radius: 50%;
+            border-radius: 6px; /* Matches container curve */
             object-fit: cover;
             border: 4px solid var(--dark-bg);
+            box-sizing: border-box;
         }
 
         @keyframes pulseGlow {
@@ -174,6 +180,7 @@
             letter-spacing: 4px;
             margin-bottom: 5px;
             text-transform: uppercase;
+            padding-top: 20px;
         }
 
         /* Fixed Arabic Typography */
@@ -196,7 +203,7 @@
             gap: 20px;
             font-size: 1rem;
             color: #a0aec0;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             padding: 12px;
             border-top: 1px solid rgba(212, 175, 55, 0.3);
             border-bottom: 1px solid rgba(212, 175, 55, 0.3);
@@ -223,7 +230,7 @@
             font-family: 'Cinzel', serif;
             font-size: 2.5rem;
             font-weight: 700;
-            margin: 20px 0;
+            margin: 10px 0 25px 0;
             background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -267,18 +274,18 @@
         @media (max-width: 768px) {
             .lantern { display: none; }
             .card { padding: 30px 20px; margin: 20px; }
-            .central-image-container { width: 160px; height: 160px; }
+            .central-image-container { width: 200px; height: 200px; } /* Adjusted square for mobile */
             .recipient-name { font-size: 1.8rem; }
             .arabic-event { font-size: 2.2rem; }
             .dates { flex-direction: column; gap: 8px; text-align: center; }
             .arabic-dua { font-size: 1.4rem; }
-            .corner-deco { width: 50px; height: 50px; }
+            .corner-deco { width: 40px; height: 40px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Fireworks Canvas Layer for Firecrackers -->
+    <!-- Fireworks Canvas Layer for Firecrackers (Moved to FRONT via CSS z-index) -->
     <canvas id="fireworksCanvas"></canvas>
 
     <!-- Animated Pattern Background -->
@@ -296,29 +303,29 @@
         <div class="corner-deco bottom-left"></div>
         <div class="corner-deco bottom-right"></div>
 
-        <!-- Central Image Passed by User -->
-        <div class="central-image-container">
-            <img src="https://i.postimg.cc/PrqstwY3/IMG-20220709-191811.jpg" alt="Eid Mubarak Image" class="central-image">
-        </div>
-
         <!-- English Title -->
         <div class="event-title">Eid Ul Adha "Mubarak"</div>
         
-        <!-- Arabic Title (Fixed) -->
+        <!-- Arabic Title -->
         <div class="arabic-event" lang="ar" dir="rtl">عِيدُ الأَضْحَى المُبَارَك</div>
 
-        <!-- Dates -->
+        <!-- Dates (Calendar Emoji Removed) -->
         <div class="dates">
-            <span>📅 27 May 2026</span>
+            <span>27 May 2026</span>
             <span style="color: var(--gold);" class="desktop-divider">|</span>
             <span class="arabic-date" lang="ar" dir="rtl">١٠ ذو الحجة ١٤٤٧ هـ 🌙</span>
+        </div>
+
+        <!-- Central Square Image (Moved Above "Warmest Wishes") -->
+        <div class="central-image-container">
+            <img src="https://i.postimg.cc/PrqstwY3/IMG-20220709-191811.jpg" alt="Eid Mubarak Image" class="central-image">
         </div>
 
         <!-- Recipient -->
         <div style="color: #e2e8f0; font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; position: relative; z-index: 2;">Warmest Wishes To</div>
         <div class="recipient-name">SYED BINEESA ANDRABI</div>
 
-        <!-- Arabic Pray/Dua (Fixed) -->
+        <!-- Arabic Pray/Dua -->
         <div class="dua-container">
             <div class="arabic-dua" lang="ar" dir="rtl">تَقَبَّلَ اللَّهُ مِنَّا وَمِنْكُمْ صَالِحَ الأَعْمَالِ</div>
             <div class="english-dua">"May Allah accept from us and from you the good deeds."</div>
@@ -426,9 +433,9 @@
         const fireworks = [];
         function animate() {
             requestAnimationFrame(animate);
-            // Create trailing effect for background
-            ctx.fillStyle = 'rgba(5, 10, 17, 0.2)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Since fireworks are now in front, clear rect completely instead of trailing
+            // to prevent the card from getting dimmed by the particle trails
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             if (Math.random() < 0.04) {
                 fireworks.push(new Firework());
