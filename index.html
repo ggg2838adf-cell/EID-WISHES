@@ -396,7 +396,7 @@
         <source src="./assets/maher_zain.mp3" type="audio/mpeg">
     </audio>
     
-    <div class="audio-toggle" onclick="toggleAudio()" title="Play Ambience">🔇</div>
+    <div class="audio-toggle" onclick="toggleAudio()" title="Toggle Ambience">🔇</div>
 
     <canvas id="ambientCanvas"></canvas>
     <canvas id="fireworksCanvas"></canvas>
@@ -463,12 +463,12 @@
         let isPlaying = false;
         audio.volume = 0; 
 
-        function toggleAudio() {
+        function playAudioWithFade() {
             if (!isPlaying) {
                 audio.play().then(() => {
                     audioBtn.innerHTML = '🔊';
                     isPlaying = true;
-                    let vol = 0;
+                    let vol = audio.volume;
                     let fade = setInterval(() => {
                         if (vol < 0.15) {
                             vol += 0.01;
@@ -477,7 +477,17 @@
                             clearInterval(fade);
                         }
                     }, 100);
-                }).catch(err => console.log("Audio playback failed:", err));
+                }).catch(err => {
+                    console.log("Autoplay blocked by browser. Awaiting user interaction.", err);
+                    audioBtn.innerHTML = '🔇';
+                    isPlaying = false;
+                });
+            }
+        }
+
+        function toggleAudio() {
+            if (!isPlaying) {
+                playAudioWithFade();
             } else {
                 let vol = audio.volume;
                 let fade = setInterval(() => {
@@ -493,6 +503,16 @@
                 }, 50);
             }
         }
+
+        // Attempt to autoplay on page load
+        window.addEventListener('load', playAudioWithFade);
+
+        // Fallback for browsers that block autoplay: start audio on first interaction
+        document.body.addEventListener('click', () => {
+            if (!isPlaying) {
+                playAudioWithFade();
+            }
+        }, { once: true });
 
         function interactLantern(element, event) {
             event.stopPropagation();
