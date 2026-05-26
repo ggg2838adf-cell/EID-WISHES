@@ -19,23 +19,33 @@
             margin: 0;
             padding: 0;
             background-color: var(--dark-bg);
-            /* Animated Islamic Geometric Pattern Overlay */
             background-image: radial-gradient(var(--gold-glow) 1px, transparent 1px),
                               radial-gradient(var(--gold-glow) 1px, transparent 1px);
             background-size: 50px 50px;
             background-position: 0 0, 25px 25px;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Poppins', sans-serif;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
+        }
+
+        /* Fireworks Canvas */
+        #fireworksCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
         }
 
         /* Subtle Background Movement */
         .pattern-overlay {
-            position: absolute;
+            position: fixed;
             top: -50%; left: -50%; right: -50%; bottom: -50%;
             width: 200%; height: 200%;
             background: transparent url('https://www.transparenttextures.com/patterns/arabesque.png') repeat;
@@ -48,29 +58,12 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Golden Firefly Particles */
-        .particle {
-            position: absolute;
-            background: var(--gold-light);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--gold), 0 0 20px var(--gold);
-            z-index: 1;
-            animation: floatParticle linear infinite;
-        }
-
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
-        }
-
         /* Elaborate Swinging Lanterns */
         .lantern {
             position: absolute;
             top: -10px;
-            width: 60px;
-            height: 140px;
+            width: 70px;
+            height: 160px;
             background: url('https://cdn-icons-png.flaticon.com/512/3063/3063065.png') no-repeat center;
             background-size: contain;
             transform-origin: top center;
@@ -78,28 +71,59 @@
             filter: invert(72%) sepia(54%) saturate(614%) hue-rotate(5deg) brightness(97%) contrast(88%) drop-shadow(0 15px 15px var(--gold-glow));
             animation: swing 4s infinite ease-in-out alternate;
         }
-        .lantern.left { left: 10%; animation-delay: 0s; }
-        .lantern.right { right: 10%; width: 50px; animation-delay: 2s; }
+        .lantern.left { left: 5%; animation-delay: 0s; }
+        .lantern.right { right: 5%; width: 60px; animation-delay: 2s; }
 
         @keyframes swing {
             0% { transform: rotate(8deg); }
             100% { transform: rotate(-8deg); }
         }
 
-        /* Main Greeting Card - Premium Glassmorphism */
+        /* Main Greeting Card */
         .card {
             position: relative;
             z-index: 10;
-            background: linear-gradient(135deg, rgba(10, 15, 30, 0.8), rgba(5, 10, 17, 0.9));
+            background: linear-gradient(135deg, rgba(10, 15, 30, 0.85), rgba(5, 10, 17, 0.95));
             padding: 40px 50px;
             border-radius: 20px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8), inset 0 0 30px rgba(212, 175, 55, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(212, 175, 55, 0.15);
             text-align: center;
             max-width: 650px;
             width: 90%;
+            margin: 40px 0;
+            overflow: hidden;
             animation: cardReveal 2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Islamic Corner Decorations */
+        .corner-deco {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: url('https://cdn-icons-png.flaticon.com/512/6168/6168128.png') no-repeat center;
+            background-size: contain;
+            opacity: 0.3;
+            filter: invert(72%) sepia(54%) saturate(614%) hue-rotate(5deg) brightness(97%) contrast(88%);
+        }
+        .top-left { top: 10px; left: 10px; transform: rotate(0deg); }
+        .top-right { top: 10px; right: 10px; transform: rotate(90deg); }
+        .bottom-left { bottom: 10px; left: 10px; transform: rotate(-90deg); }
+        .bottom-right { bottom: 10px; right: 10px; transform: rotate(180deg); }
+
+        /* Mosque Silhouette at the bottom of the card */
+        .mosque-bg {
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: url('https://cdn-icons-png.flaticon.com/512/2271/2271060.png') repeat-x bottom;
+            background-size: auto 100%;
+            opacity: 0.15;
+            z-index: 0;
+            filter: invert(72%) sepia(54%) saturate(614%) hue-rotate(5deg) brightness(97%) contrast(88%);
         }
 
         /* Gold Border Glow Animation */
@@ -110,7 +134,7 @@
             border-radius: 22px;
             background: linear-gradient(45deg, transparent, var(--gold), transparent, var(--gold));
             z-index: -1;
-            opacity: 0.3;
+            opacity: 0.4;
             animation: borderGlow 4s linear infinite;
         }
 
@@ -124,34 +148,69 @@
             100% { background-position: 200% 200%; }
         }
 
+        /* Central Image Styling */
+        .central-image-container {
+            position: relative;
+            z-index: 2;
+            margin: 0 auto 25px auto;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%; /* Makes it circular */
+            padding: 5px;
+            background: linear-gradient(45deg, var(--gold), #fff, var(--gold));
+            box-shadow: 0 0 30px var(--gold-glow);
+            animation: pulseGlow 3s infinite alternate;
+        }
+
+        .central-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--dark-bg);
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 20px var(--gold-glow); }
+            100% { box-shadow: 0 0 50px rgba(243, 229, 171, 0.8); }
+        }
+
         /* Typography */
         .event-title {
+            position: relative;
+            z-index: 2;
             font-family: 'Cinzel', serif;
             color: var(--gold-light);
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             letter-spacing: 4px;
             margin-bottom: 5px;
             text-transform: uppercase;
         }
 
         .arabic-event {
+            position: relative;
+            z-index: 2;
             font-family: 'Aref Ruqaa', serif;
             color: var(--gold);
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             margin-bottom: 20px;
-            text-shadow: 0 0 10px var(--gold-glow);
+            text-shadow: 0 0 15px var(--gold-glow);
         }
 
         .dates {
+            position: relative;
+            z-index: 2;
             display: flex;
             justify-content: center;
             gap: 20px;
-            font-size: 0.9rem;
+            font-size: 1rem;
             color: #a0aec0;
             margin-bottom: 30px;
-            padding: 10px;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 12px;
+            border-top: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
         }
 
         .dates span {
@@ -162,10 +221,13 @@
         
         .dates .arabic-date {
             font-family: 'Amiri', serif;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            color: var(--gold-light);
         }
 
         .recipient-name {
+            position: relative;
+            z-index: 2;
             font-family: 'Cinzel', serif;
             font-size: 2.5rem;
             font-weight: 700;
@@ -175,6 +237,7 @@
             -webkit-text-fill-color: transparent;
             animation: shimmer 3s infinite linear;
             background-size: 200% auto;
+            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
 
         @keyframes shimmer {
@@ -182,12 +245,15 @@
         }
 
         .dua-container {
+            position: relative;
+            z-index: 2;
             margin-top: 25px;
-            background: rgba(212, 175, 55, 0.05);
-            padding: 15px;
-            border-radius: 10px;
+            background: rgba(212, 175, 55, 0.08);
+            padding: 20px;
+            border-radius: 15px;
             border-left: 3px solid var(--gold);
             border-right: 3px solid var(--gold);
+            backdrop-filter: blur(5px);
         }
 
         .arabic-dua {
@@ -195,11 +261,12 @@
             font-size: 1.8rem;
             color: var(--gold-light);
             line-height: 1.6;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
         }
 
         .english-dua {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #cbd5e1;
             font-style: italic;
         }
@@ -207,15 +274,20 @@
         /* Mobile Adjustments */
         @media (max-width: 768px) {
             .lantern { display: none; }
-            .card { padding: 30px 20px; }
+            .card { padding: 30px 20px; margin: 20px; }
+            .central-image-container { width: 160px; height: 160px; }
             .recipient-name { font-size: 1.8rem; }
-            .arabic-event { font-size: 2rem; }
-            .dates { flex-direction: column; gap: 5px; text-align: center; }
+            .arabic-event { font-size: 2.2rem; }
+            .dates { flex-direction: column; gap: 8px; text-align: center; }
             .arabic-dua { font-size: 1.4rem; }
+            .corner-deco { width: 50px; height: 50px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Fireworks Canvas Layer -->
+    <canvas id="fireworksCanvas"></canvas>
 
     <!-- Animated Background Layer -->
     <div class="pattern-overlay"></div>
@@ -226,19 +298,33 @@
 
     <!-- Main Glass Card -->
     <div class="card">
+        <!-- Corner Decorations -->
+        <div class="corner-deco top-left"></div>
+        <div class="corner-deco top-right"></div>
+        <div class="corner-deco bottom-left"></div>
+        <div class="corner-deco bottom-right"></div>
+
+        <!-- Mosque Silhouette -->
+        <div class="mosque-bg"></div>
+
+        <!-- Central Image -->
+        <div class="central-image-container">
+            <img src="https://i.postimg.cc/PrqstwY3/IMG-20220709-191811.jpg" alt="Eid Mubarak Image" class="central-image">
+        </div>
+
         <!-- Event Titles -->
         <div class="event-title">Eid Ul Adha</div>
         <div class="arabic-event">عِيدُ الأَضْحَى المُبَارَك</div>
 
-        <!-- Dates (Tomorrow's Date Fixed) -->
+        <!-- Dates (Tomorrow's Date) -->
         <div class="dates">
             <span>📅 27 May 2026</span>
-            <span style="color: var(--gold);">|</span>
+            <span style="color: var(--gold);" class="desktop-divider">|</span>
             <span class="arabic-date">١٠ ذو الحجة ١٤٤٧ هـ 🌙</span>
         </div>
 
         <!-- Greeting to Recipient -->
-        <div style="color: #e2e8f0; font-size: 1rem; letter-spacing: 2px; text-transform: uppercase;">Warmest Wishes To</div>
+        <div style="color: #e2e8f0; font-size: 1.1rem; letter-spacing: 2px; text-transform: uppercase; position: relative; z-index: 2;">Warmest Wishes To</div>
         <div class="recipient-name">SYED BINEESA ANDRABI</div>
 
         <!-- Arabic Pray/Dua -->
@@ -247,38 +333,130 @@
             <div class="english-dua">"May Allah accept from us and from you the good deeds."</div>
         </div>
         <div class="dua-container" style="margin-top: 15px; border: none; background: transparent;">
-            <div class="arabic-dua" style="font-size: 1.4rem;">اللَّهُمَّ اجْعَلْ هَذَا الْعِيدَ فَرَحَةً وَسُرُوراً عَلَيْنَا وَعَلَى الأُمَّةِ الإِسْلاَمِيَّةِ جَمْعَاء</div>
+            <div class="arabic-dua" style="font-size: 1.5rem;">اللَّهُمَّ اجْعَلْ هَذَا الْعِيدَ فَرَحَةً وَسُرُوراً عَلَيْنَا وَعَلَى الأُمَّةِ الإِسْلاَمِيَّةِ جَمْعَاء</div>
             <div class="english-dua">"O Allah, make this Eid a joy and happiness for us and the entire Islamic Ummah."</div>
         </div>
     </div>
 
-    <!-- JavaScript for Golden Fireflies -->
+    <!-- Spectacular Fireworks Animation Script -->
     <script>
-        function createFireflies() {
-            const body = document.querySelector('body');
-            const fireflyCount = 40; 
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-            for (let i = 0; i < fireflyCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                // Randomize properties
-                const size = Math.random() * 4 + 2; 
-                const posX = Math.random() * 100; 
-                const delay = Math.random() * 10; 
-                const duration = Math.random() * 8 + 5; 
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
 
-                particle.style.width = size + 'px';
-                particle.style.height = size + 'px';
-                particle.style.left = posX + 'vw';
-                particle.style.animationDelay = delay + 's';
-                particle.style.animationDuration = duration + 's';
-
-                body.appendChild(particle);
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                const angle = Math.random() * Math.PI * 2;
+                const speed = Math.random() * 4 + 1;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.alpha = 1;
+                this.decay = Math.random() * 0.015 + 0.015;
+            }
+            update() {
+                this.vx *= 0.99;
+                this.vy *= 0.99;
+                this.vy += 0.02; // gravity
+                this.x += this.vx;
+                this.y += this.vy;
+                this.alpha -= this.decay;
+            }
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = this.alpha;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.restore();
             }
         }
 
-        window.onload = createFireflies;
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetY = Math.random() * (canvas.height / 2);
+                this.speed = Math.random() * 3 + 3;
+                this.angle = -Math.PI / 2 + (Math.random() * 0.5 - 0.25);
+                this.vx = Math.cos(this.angle) * this.speed;
+                this.vy = Math.sin(this.angle) * this.speed;
+                this.exploded = false;
+                this.particles = [];
+                // Gold, White, and slight blue hues to match theme
+                const colors = ['#d4af37', '#f3e5ab', '#ffffff', '#8faadc'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+            }
+            update() {
+                if (!this.exploded) {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    if (this.vy >= 0 || this.y <= this.targetY) {
+                        this.explode();
+                    }
+                } else {
+                    for (let i = this.particles.length - 1; i >= 0; i--) {
+                        this.particles[i].update();
+                        if (this.particles[i].alpha <= 0) {
+                            this.particles.splice(i, 1);
+                        }
+                    }
+                }
+            }
+            explode() {
+                this.exploded = true;
+                for (let i = 0; i < 80; i++) {
+                    this.particles.push(new Particle(this.x, this.y, this.color));
+                }
+            }
+            draw(ctx) {
+                if (!this.exploded) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                } else {
+                    for (let particle of this.particles) {
+                        particle.draw(ctx);
+                    }
+                }
+            }
+        }
+
+        const fireworks = [];
+        function animate() {
+            requestAnimationFrame(animate);
+            // Create trailing effect
+            ctx.fillStyle = 'rgba(5, 10, 17, 0.2)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            if (Math.random() < 0.05) {
+                fireworks.push(new Firework());
+            }
+
+            for (let i = fireworks.length - 1; i >= 0; i--) {
+                fireworks[i].update();
+                fireworks[i].draw(ctx);
+                if (fireworks[i].exploded && fireworks[i].particles.length === 0) {
+                    fireworks.splice(i, 1);
+                }
+            }
+        }
+        animate();
+
+        // Style adjustments for mobile divider
+        if(window.innerWidth <= 768) {
+            document.querySelector('.desktop-divider').style.display = 'none';
+        }
     </script>
 </body>
 </html>
