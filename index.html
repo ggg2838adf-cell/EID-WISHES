@@ -10,7 +10,7 @@
     <style>
         html {
             scroll-behavior: smooth;
-            background-color: #02050a;
+            background-color: #000; /* Starts purely black for intro */
         }
 
         body {
@@ -33,6 +33,179 @@
             --dark-bg: #050a11;
         }
 
+        /* =========================================================
+           CINEMATIC INTRO SEQUENCE 
+           ========================================================= */
+        #intro-sequence {
+            position: fixed; 
+            inset: 0; 
+            z-index: 999999;
+            background: #000;
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            overflow: hidden;
+            animation: hideIntro 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards 7.5s;
+            cursor: pointer; /* Suggests interactivity for audio */
+        }
+        @keyframes hideIntro {
+            0% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(100px); visibility: hidden; }
+        }
+
+        #intro-sky {
+            position: absolute; 
+            inset: 0;
+            animation: skyZoom 7s ease-out forwards 1s;
+            transform-origin: center center;
+        }
+        @keyframes skyZoom {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.10); } /* Very slow, subtle zoom */
+        }
+
+        #intro-sparkle {
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            width: 2px; 
+            height: 2px; 
+            background: #fff; 
+            border-radius: 50%;
+            box-shadow: 0 0 5px 1px rgba(255,255,255,0.5);
+            opacity: 0;
+            animation: sparkleEmerge 1s ease-in forwards 0.5s, sparkleBrighten 1s ease forwards 1.5s;
+        }
+        @keyframes sparkleEmerge { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes sparkleBrighten { 
+            from { box-shadow: 0 0 5px 1px rgba(255,255,255,0.5); } 
+            to { box-shadow: 0 0 15px 3px #fff; width: 3px; height: 3px; } 
+        }
+
+        #intro-bg-stars {
+            position: absolute; 
+            inset: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 20% 30%, #fff, transparent),
+                radial-gradient(1px 1px at 40% 70%, #fff, transparent),
+                radial-gradient(2px 2px at 60% 20%, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 80% 50%, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 10% 80%, rgba(255,255,255,0.6), transparent),
+                radial-gradient(1px 1px at 90% 10%, #fff, transparent),
+                radial-gradient(1.5px 1.5px at 70% 85%, #fff, transparent);
+            background-size: 150px 150px;
+            opacity: 0;
+            animation: fade 1.5s ease forwards 2.5s;
+        }
+
+        #intro-moon-wrapper {
+            position: absolute; 
+            top: 48%; 
+            left: 50%; 
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            animation: fade 2s ease forwards 3.5s;
+        }
+        
+        #intro-moon {
+            width: 130px; 
+            height: 130px; 
+            border-radius: 50%;
+            box-shadow: inset -15px -15px 0 0 var(--gold-light);
+            filter: drop-shadow(0 0 35px var(--gold-glow));
+        }
+
+        #intro-mist {
+            position: absolute; 
+            inset: -60px;
+            background: radial-gradient(circle, rgba(212,175,55,0.2) 0%, transparent 60%);
+            filter: blur(20px);
+            opacity: 0;
+            animation: fade 2s ease forwards 3.8s;
+        }
+
+        .intro-bird {
+            position: absolute; 
+            width: 25px;
+            fill: #000; /* Silhouette crossing the bright moon */
+            opacity: 0;
+            filter: drop-shadow(0 0 3px rgba(212,175,55,0.4));
+        }
+        
+        /* Bird flapper animation */
+        .intro-bird path {
+            transform-origin: center;
+            animation: flapWing 0.4s infinite alternate;
+        }
+        @keyframes flapWing {
+            0% { transform: scaleY(1); }
+            100% { transform: scaleY(0.3); }
+        }
+
+        /* Flight Paths */
+        #bird1 { top: 44%; right: -50px; animation: fly1 3.5s linear forwards 4.5s; }
+        #bird2 { top: 51%; right: -50px; width: 18px; animation: fly2 4s linear forwards 4.8s; }
+        #bird3 { top: 48%; right: -50px; width: 30px; animation: fly3 2.5s linear forwards 5.2s; }
+
+        @keyframes fly1 { 
+            0% { right: -50px; opacity: 0; transform: translateY(0); } 
+            15% { opacity: 1; } 
+            85% { opacity: 1; } 
+            100% { right: 120%; opacity: 0; transform: translateY(-30px); } 
+        }
+        @keyframes fly2 { 
+            0% { right: -50px; opacity: 0; transform: translateY(0); } 
+            15% { opacity: 1; } 
+            85% { opacity: 1; } 
+            100% { right: 120%; opacity: 0; transform: translateY(20px); } 
+        }
+        /* Bird 3 (The trigger bird) reaches center then blasts */
+        @keyframes fly3 { 
+            0% { right: -50px; opacity: 0; transform: translateY(0); } 
+            15% { opacity: 1; } 
+            75% { right: 55%; opacity: 1; transform: translateY(-5px); } 
+            77% { right: 58%; opacity: 0; transform: translateY(-5px) scale(1.5); }
+            100% { right: 60%; opacity: 0; }
+        }
+
+        #intro-gold-trail {
+            position: absolute; 
+            top: 48%; 
+            right: 58%;
+            width: 0; 
+            height: 2px;
+            background: #fff;
+            box-shadow: 0 0 40px 15px var(--gold-light);
+            opacity: 0;
+            transform: translateY(-5px);
+            animation: trailShoot 0.4s ease-out forwards 7.15s;
+            border-radius: 50%;
+        }
+        @keyframes trailShoot {
+            0% { opacity: 1; width: 0; right: 58%; box-shadow: 0 0 40px 15px var(--gold-light); }
+            100% { opacity: 0; width: 150vw; right: 150vw; box-shadow: 0 0 100px 30px #fff; }
+        }
+
+        #intro-bloom {
+            position: absolute; 
+            inset: 0;
+            background: linear-gradient(to bottom, #fff 0%, var(--gold-light) 60%, transparent 100%);
+            opacity: 0; 
+            mix-blend-mode: screen;
+            animation: bloomFlash 1.2s ease-out forwards 7.2s;
+        }
+        @keyframes bloomFlash {
+            0% { opacity: 0; transform: translateY(-20px); }
+            40% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(50px); }
+        }
+
+        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+        /* =========================================================
+           MAIN PAGE STYLING (Delayed Reveal) 
+           ========================================================= */
         .audio-toggle {
             position: fixed;
             top: 20px;
@@ -56,6 +229,8 @@
             transition: all 0.3s ease;
             -webkit-tap-highlight-color: transparent;
             box-sizing: border-box;
+            opacity: 0;
+            animation: fade 2s ease forwards 8.5s;
         }
         
         .audio-toggle:hover {
@@ -79,7 +254,7 @@
             z-index: 0;
             pointer-events: none;
             opacity: 0;
-            animation: fadeIn 3s ease-out 2s forwards;
+            animation: fadeIn 3s ease-out 8s forwards;
         }
 
         #fireworksCanvas {
@@ -101,7 +276,7 @@
             height: 120px;
             z-index: 1;
             opacity: 0;
-            animation: moonRise 4s cubic-bezier(0.25, 1, 0.5, 1) 0.5s forwards;
+            animation: moonRise 4s cubic-bezier(0.25, 1, 0.5, 1) 8s forwards;
             pointer-events: none;
         }
         
@@ -130,13 +305,13 @@
             cursor: pointer;
             filter: invert(72%) sepia(54%) saturate(614%) hue-rotate(5deg) brightness(97%) contrast(88%) drop-shadow(0 10px 15px rgba(212,175,55,0.3));
             opacity: 0;
-            animation: fadeInSwing 3s ease-out 1s forwards, swing 4s infinite ease-in-out alternate 1s;
+            animation: fadeInSwing 3s ease-out 8.5s forwards, swing 4s infinite ease-in-out alternate 8.5s;
             transition: filter 0.3s ease;
             -webkit-tap-highlight-color: transparent;
         }
         
         .lantern.left { left: 5%; }
-        .lantern.right { right: 5%; width: 60px; animation-delay: 1.5s, 1.5s; }
+        .lantern.right { right: 5%; width: 60px; animation-delay: 9s, 9s; }
         
         .lantern.flare {
             filter: invert(72%) sepia(54%) saturate(614%) hue-rotate(5deg) brightness(150%) contrast(100%) drop-shadow(0 0 50px var(--gold));
@@ -191,7 +366,7 @@
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.9), inset 0 0 30px rgba(212, 175, 55, 0.1);
             z-index: -1;
             opacity: 0;
-            animation: fadeIn 3s ease-out 4s forwards;
+            animation: fadeIn 3s ease-out 8s forwards;
         }
 
         .card-content {
@@ -200,10 +375,10 @@
             z-index: 2;
         }
 
-        .staged-1 { opacity: 0; animation: fadeIn 2s ease-out 3s forwards; }
-        .staged-2 { opacity: 0; animation: fadeIn 2s ease-out 4s forwards; }
-        .staged-3 { opacity: 0; animation: fadeIn 2s ease-out 5s forwards; }
-        .staged-4 { opacity: 0; animation: fadeIn 2s ease-out 6s forwards; }
+        .staged-1 { opacity: 0; animation: fadeIn 2s ease-out 8.5s forwards; }
+        .staged-2 { opacity: 0; animation: fadeIn 2s ease-out 9.0s forwards; }
+        .staged-3 { opacity: 0; animation: fadeIn 2s ease-out 9.5s forwards; }
+        .staged-4 { opacity: 0; animation: fadeIn 2s ease-out 10.0s forwards; }
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -414,6 +589,28 @@
 </head>
 <body>
 
+    <!-- Cinematic Intro Sequence -->
+    <div id="intro-sequence" onclick="playAudioWithFade()">
+        <div id="intro-sky">
+            <div id="intro-bg-stars"></div>
+        </div>
+        <div id="intro-sparkle"></div>
+        
+        <div id="intro-moon-wrapper">
+            <div id="intro-moon"></div>
+            <div id="intro-mist"></div>
+        </div>
+
+        <!-- Bird Silhouettes -->
+        <svg class="intro-bird" id="bird1" viewBox="0 0 24 24"><path d="M12,14c-2-2-5-2-7,0c2-2,5-2,7-1c2-1,5-1,7,1C17,12,14,12,12,14z"/></svg>
+        <svg class="intro-bird" id="bird2" viewBox="0 0 24 24"><path d="M12,14c-2-2-5-2-7,0c2-2,5-2,7-1c2-1,5-1,7,1C17,12,14,12,12,14z"/></svg>
+        <svg class="intro-bird" id="bird3" viewBox="0 0 24 24"><path d="M12,14c-2-2-5-2-7,0c2-2,5-2,7-1c2-1,5-1,7,1C17,12,14,12,12,14z"/></svg>
+
+        <div id="intro-gold-trail"></div>
+        <div id="intro-bloom"></div>
+    </div>
+
+    <!-- Main Page Elements -->
     <audio id="ambientAudio" loop preload="auto">
         <source src="./assets/maher_zain.mp3" type="audio/mpeg">
     </audio>
@@ -543,8 +740,10 @@
             }
         }
 
-        // Attempt to autoplay on page load
-        window.addEventListener('load', playAudioWithFade);
+        // Attempt to autoplay on page load (Wait for sparkle animation at 0.5s)
+        window.addEventListener('load', () => {
+            setTimeout(playAudioWithFade, 500);
+        });
 
         // Fallback for browsers that block autoplay: start audio on first interaction
         document.body.addEventListener('click', () => {
@@ -553,7 +752,7 @@
             }
         }, { once: true });
 
-        // Trigger lantern auto-glow at exactly 3 seconds
+        // Trigger lantern auto-glow exactly 3 seconds after the main page reveals (8.5s + 3s = 11.5s)
         setTimeout(() => {
             document.querySelectorAll('.lantern').forEach(lantern => {
                 lantern.classList.add('flare');
@@ -578,7 +777,7 @@
                     setTimeout(() => spark.remove(), 800);
                 }
             });
-        }, 3000);
+        }, 11500);
 
         function interactLantern(element, event) {
             event.stopPropagation();
@@ -732,7 +931,7 @@
             constructor() {
                 this.x = Math.random() * fgCanvas.width;
                 this.y = fgCanvas.height;
-                // Modifying explosion target height to be specifically near the top 25% of the screen where titles are
+                // Target explosion height specifically near the top 25% where titles are
                 this.targetY = Math.random() * (fgCanvas.height * 0.25) + 20; 
                 this.speed = Math.random() * 3 + 4;
                 this.angle = -Math.PI / 2 + (Math.random() * 0.4 - 0.2);
@@ -771,6 +970,7 @@
 
         const fireworks = [];
         
+        // Starts fireworks slightly after main sequence reveal
         setTimeout(() => {
             function animateFireworks() {
                 requestAnimationFrame(animateFireworks);
@@ -787,7 +987,7 @@
                 }
             }
             animateFireworks();
-        }, 6000);
+        }, 12000);
 
         let resizeTimeout;
         window.addEventListener('resize', () => {
